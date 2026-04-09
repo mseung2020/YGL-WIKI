@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주린위키 디자인 후보</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f0f0f0; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 24px; margin-bottom: 8px; color: #111; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 40px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 32px; max-width: 1400px; margin: 0 auto; }
+  .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .card-label { background: #111; color: white; padding: 10px 16px; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .card-label span { background: #444; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 400; }
+  .preview { height: 420px; overflow: hidden; position: relative; transform-origin: top left; }
+  .preview-inner { width: 800px; transform: scale(0.45); transform-origin: top left; height: 933px; }
+
+  /* ===== 1. 위키피디아 클래식 ===== */
+  .d1 { background: #fff; font-family: 'Linux Libertine', Georgia, serif; }
+  .d1 .nav { background: #fff; border-bottom: 1px solid #a2a9b1; padding: 8px 20px; display: flex; align-items: center; gap: 12px; }
+  .d1 .nav-logo { font-size: 18px; color: #000; font-weight: bold; }
+  .d1 .nav input { border: 1px solid #a2a9b1; padding: 4px 8px; font-size: 13px; border-radius: 2px; }
+  .d1 .content { display: flex; }
+  .d1 .sidebar { width: 160px; padding: 16px; background: #f8f9fa; border-right: 1px solid #a2a9b1; font-size: 12px; }
+  .d1 .sidebar-title { font-weight: bold; margin-bottom: 8px; color: #54595d; font-size: 11px; text-transform: uppercase; }
+  .d1 .sidebar a { display: block; color: #0645ad; margin-bottom: 4px; }
+  .d1 .main { flex: 1; padding: 20px 24px; }
+  .d1 .main h1 { font-size: 28px; border-bottom: 1px solid #a2a9b1; padding-bottom: 4px; margin-bottom: 12px; font-weight: normal; }
+  .d1 .toc { background: #f8f9fa; border: 1px solid #a2a9b1; padding: 12px 16px; display: inline-block; margin-bottom: 16px; font-size: 12px; min-width: 180px; }
+  .d1 .toc-title { font-weight: bold; text-align: center; margin-bottom: 8px; }
+  .d1 .toc ol { padding-left: 20px; }
+  .d1 .toc li { margin-bottom: 3px; color: #0645ad; }
+  .d1 .main p { font-size: 14px; line-height: 1.8; color: #202122; margin-bottom: 12px; }
+  .d1 .main h2 { font-size: 20px; border-bottom: 1px solid #a2a9b1; margin: 16px 0 8px; font-weight: normal; }
+  .d1 .infobox { float: right; border: 1px solid #a2a9b1; background: #f8f9fa; padding: 12px; margin: 0 0 12px 16px; width: 200px; font-size: 12px; }
+  .d1 .infobox-title { background: #cee0f2; text-align: center; padding: 6px; font-weight: bold; margin: -12px -12px 8px; font-size: 13px; }
+  .d1 .infobox table { width: 100%; }
+  .d1 .infobox td { padding: 2px 4px; }
+  .d1 .infobox td:first-child { color: #54595d; font-weight: bold; white-space: nowrap; }
+
+  /* ===== 2. 나무위키 스타일 ===== */
+  .d2 { background: #fff; font-family: 'Noto Sans KR', sans-serif; }
+  .d2 .nav { background: #1e2023; padding: 0 16px; display: flex; align-items: center; height: 48px; gap: 16px; }
+  .d2 .nav-logo { color: #fff; font-weight: 900; font-size: 18px; }
+  .d2 .nav-logo em { color: #52b54b; font-style: normal; }
+  .d2 .nav input { background: #2d3035; border: none; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 13px; width: 200px; }
+  .d2 .tab-bar { background: #f5f5f5; border-bottom: 1px solid #ddd; padding: 0 20px; display: flex; gap: 0; }
+  .d2 .tab { padding: 8px 16px; font-size: 13px; color: #555; border-bottom: 2px solid transparent; cursor: pointer; }
+  .d2 .tab.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; }
+  .d2 .main { padding: 20px; }
+  .d2 .main h1 { font-size: 24px; margin-bottom: 4px; }
+  .d2 .meta { color: #999; font-size: 12px; margin-bottom: 16px; }
+  .d2 .toc { background: #f5f5f5; border-radius: 4px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; }
+  .d2 .toc-title { font-weight: bold; margin-bottom: 8px; }
+  .d2 .toc ol { padding-left: 20px; }
+  .d2 .toc li { margin-bottom: 4px; color: #1a73e8; }
+  .d2 .main p { font-size: 14px; line-height: 1.9; margin-bottom: 12px; }
+  .d2 .main h2 { font-size: 18px; border-bottom: 2px solid #1a73e8; padding-bottom: 4px; margin: 20px 0 10px; }
+  .d2 .tag { display: inline-block; background: #e8f0fe; color: #1a73e8; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-right: 4px; }
+
+  /* ===== 3. 모던 다크 ===== */
+  .d3 { background: #0f1117; color: #e2e8f0; }
+  .d3 .nav { background: #1a1d27; border-bottom: 1px solid #2d3748; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .d3 .nav-logo { color: #fff; font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+  .d3 .nav-logo em { color: #6366f1; font-style: normal; }
+  .d3 .nav-right { display: flex; align-items: center; gap: 12px; }
+  .d3 .nav input { background: #2d3748; border: 1px solid #4a5568; color: #e2e8f0; padding: 6px 12px; border-radius: 8px; font-size: 13px; }
+  .d3 .content { display: flex; }
+  .d3 .sidebar { width: 180px; padding: 20px 16px; border-right: 1px solid #2d3748; }
+  .d3 .sidebar-title { color: #6366f1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .d3 .sidebar a { display: block; color: #a0aec0; margin-bottom: 6px; font-size: 13px; padding: 4px 8px; border-radius: 6px; }
+  .d3 .sidebar a:hover { background: #2d3748; color: #fff; }
+  .d3 .sidebar a.active { background: #6366f1; color: #fff; }
+  .d3 .main { flex: 1; padding: 28px 32px; }
+  .d3 .badge { background: #6366f1; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 11px; display: inline-block; margin-bottom: 12px; }
+  .d3 .main h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .d3 .main p { font-size: 14px; line-height: 1.9; color: #a0aec0; margin-bottom: 14px; }
+  .d3 .main h2 { font-size: 18px; color: #e2e8f0; margin: 24px 0 10px; font-weight: 700; padding-left: 12px; border-left: 3px solid #6366f1; }
+  .d3 .highlight { background: #1a1d27; border: 1px solid #2d3748; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; font-size: 13px; }
+  .d3 .highlight strong { color: #6366f1; }
+
+  /* ===== 4. 금융/전문 스타일 ===== */
+  .d4 { background: #fafafa; }
+  .d4 .nav { background: #003087; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .d4 .nav-logo { color: #fff; font-weight: 800; font-size: 20px; letter-spacing: 1px; }
+  .d4 .nav-logo em { color: #ffd700; font-style: normal; }
+  .d4 .nav input { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 13px; }
+  .d4 .breadcrumb { background: #f0f4f8; border-bottom: 1px solid #dde3ea; padding: 8px 24px; font-size: 12px; color: #666; }
+  .d4 .breadcrumb a { color: #003087; }
+  .d4 .content { display: flex; }
+  .d4 .main { flex: 1; padding: 24px; }
+  .d4 .main h1 { font-size: 26px; color: #003087; margin-bottom: 4px; font-weight: 800; }
+  .d4 .summary-box { background: #fff; border-left: 4px solid #003087; padding: 14px 18px; margin: 16px 0; font-size: 13px; line-height: 1.8; color: #444; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .d4 .main p { font-size: 14px; line-height: 1.9; color: #333; margin-bottom: 12px; }
+  .d4 .main h2 { font-size: 17px; color: #003087; margin: 20px 0 8px; font-weight: 700; border-bottom: 1px solid #dde3ea; padding-bottom: 6px; }
+  .d4 .stat-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+  .d4 .stat-card { background: #fff; border: 1px solid #dde3ea; border-radius: 8px; padding: 12px; text-align: center; }
+  .d4 .stat-card .val { font-size: 20px; font-weight: 800; color: #003087; }
+  .d4 .stat-card .lbl { font-size: 11px; color: #999; margin-top: 2px; }
+  .d4 .sidebar { width: 200px; padding: 24px 16px; border-left: 1px solid #dde3ea; }
+  .d4 .related { font-size: 12px; }
+  .d4 .related-title { font-weight: 700; color: #003087; margin-bottom: 8px; font-size: 13px; }
+  .d4 .related a { display: block; color: #003087; margin-bottom: 6px; padding: 6px 8px; background: #f0f4f8; border-radius: 4px; }
+
+  /* ===== 5. 매거진/블로그 ===== */
+  .d5 { background: #fff; }
+  .d5 .nav { padding: 16px 32px; border-bottom: 3px solid #111; display: flex; align-items: center; justify-content: space-between; }
+  .d5 .nav-logo { font-size: 28px; font-weight: 900; letter-spacing: -2px; color: #111; }
+  .d5 .nav-logo em { color: #ff4444; font-style: normal; }
+  .d5 .nav-right { display: flex; gap: 20px; align-items: center; font-size: 13px; font-weight: 600; }
+  .d5 .nav-right a { color: #111; }
+  .d5 .category-bar { background: #111; padding: 0 32px; display: flex; gap: 0; }
+  .d5 .cat-item { color: #aaa; padding: 8px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .d5 .cat-item.active { color: #fff; background: #ff4444; }
+  .d5 .content { display: flex; gap: 0; }
+  .d5 .main { flex: 1; padding: 28px 32px; }
+  .d5 .eyebrow { color: #ff4444; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .d5 .main h1 { font-size: 36px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 12px; }
+  .d5 .deck { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 16px; }
+  .d5 .main p { font-size: 15px; line-height: 1.9; margin-bottom: 14px; color: #222; }
+  .d5 .main h2 { font-size: 20px; font-weight: 800; margin: 24px 0 10px; }
+  .d5 .pull-quote { font-size: 22px; font-weight: 700; border-left: 5px solid #ff4444; padding-left: 16px; margin: 20px 0; color: #111; line-height: 1.4; }
+  .d5 .sidebar { width: 220px; padding: 28px 20px; border-left: 1px solid #eee; }
+  .d5 .sidebar-section { margin-bottom: 20px; }
+  .d5 .sidebar-title { font-weight: 800; font-size: 12px; text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 6px; margin-bottom: 10px; }
+  .d5 .sidebar a { display: flex; gap: 8px; margin-bottom: 10px; font-size: 13px; font-weight: 600; color: #111; }
+
+  /* ===== 6. 그린 에코 ===== */
+  .d6 { background: #f7faf7; }
+  .d6 .nav { background: #2d6a4f; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .d6 .nav-logo { color: #fff; font-weight: 800; font-size: 20px; }
+  .d6 .nav-logo em { color: #95d5b2; font-style: normal; }
+  .d6 .nav input { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; }
+  .d6 .hero { background: linear-gradient(135deg, #2d6a4f, #40916c); color: #fff; padding: 28px 32px; }
+  .d6 .hero-badge { background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; margin-bottom: 10px; }
+  .d6 .hero h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+  .d6 .hero p { font-size: 14px; opacity: 0.85; line-height: 1.6; }
+  .d6 .content { display: flex; }
+  .d6 .main { flex: 1; padding: 24px 28px; }
+  .d6 .main p { font-size: 14px; line-height: 1.9; color: #333; margin-bottom: 14px; }
+  .d6 .main h2 { font-size: 18px; color: #2d6a4f; margin: 20px 0 10px; font-weight: 700; }
+  .d6 .tip-box { background: #d8f3dc; border-radius: 10px; padding: 14px 16px; font-size: 13px; color: #1b4332; margin-bottom: 16px; }
+  .d6 .tip-box strong { color: #2d6a4f; }
+  .d6 .sidebar { width: 180px; padding: 24px 16px; }
+  .d6 .sidebar-card { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #d8f3dc; font-size: 12px; }
+  .d6 .sidebar-card .title { font-weight: 700; color: #2d6a4f; margin-bottom: 4px; }
+
+  /* ===== 7. 미니멀 타이포그래피 ===== */
+  .d7 { background: #fff; font-family: 'Georgia', serif; }
+  .d7 .nav { padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; }
+  .d7 .nav-logo { font-size: 22px; font-weight: bold; color: #111; letter-spacing: -0.5px; }
+  .d7 .nav input { border: none; border-bottom: 1px solid #ccc; padding: 4px 0; font-size: 13px; font-family: inherit; outline: none; }
+  .d7 .main { max-width: 620px; margin: 40px auto; padding: 0 24px; }
+  .d7 .kicker { color: #999; font-size: 12px; font-family: sans-serif; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .d7 .main h1 { font-size: 40px; line-height: 1.15; margin-bottom: 16px; letter-spacing: -1px; }
+  .d7 .summary { font-size: 18px; color: #444; line-height: 1.6; margin-bottom: 24px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+  .d7 .main p { font-size: 16px; line-height: 1.9; margin-bottom: 16px; color: #222; }
+  .d7 .main h2 { font-size: 22px; margin: 28px 0 12px; }
+  .d7 .footnote { font-size: 12px; font-family: sans-serif; color: #999; border-top: 1px solid #eee; margin-top: 20px; padding-top: 12px; }
+
+  /* ===== 8. 카드/대시보드 스타일 ===== */
+  .d8 { background: #f4f6fc; }
+  .d8 .nav { background: #fff; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .d8 .nav-logo { font-weight: 800; font-size: 18px; color: #4f46e5; }
+  .d8 .nav input { background: #f4f6fc; border: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; }
+  .d8 .content { display: flex; }
+  .d8 .sidebar { width: 56px; background: #fff; border-right: 1px solid #e8eaf0; padding: 16px 8px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .d8 .icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .d8 .icon.active { background: #4f46e5; }
+  .d8 .main { flex: 1; padding: 24px; }
+  .d8 .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .d8 .page-header h1 { font-size: 24px; font-weight: 800; color: #111; }
+  .d8 .chips { display: flex; gap: 6px; margin-top: 6px; }
+  .d8 .chip { background: #eef2ff; color: #4f46e5; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .d8 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .d8 .stat { background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .d8 .stat .val { font-size: 22px; font-weight: 800; color: #4f46e5; }
+  .d8 .stat .lbl { font-size: 11px; color: #999; margin-top: 2px; }
+  .d8 .content-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .d8 .content-card p { font-size: 13px; line-height: 1.8; color: #444; margin-bottom: 10px; }
+  .d8 .content-card h2 { font-size: 15px; font-weight: 700; margin: 14px 0 8px; color: #111; }
+
+  /* ===== 9. 오렌지 스타트업 ===== */
+  .d9 { background: #fff; }
+  .d9 .nav { padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; }
+  .d9 .nav-logo { font-weight: 900; font-size: 20px; color: #111; }
+  .d9 .nav-logo em { color: #ff6b35; font-style: normal; }
+  .d9 .nav-right { display: flex; gap: 8px; }
+  .d9 .btn { padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+  .d9 .btn-outline { border: 1px solid #ddd; color: #333; }
+  .d9 .btn-fill { background: #ff6b35; color: #fff; border: none; }
+  .d9 .hero { background: linear-gradient(135deg, #fff5f0, #fff); padding: 32px 28px 20px; border-bottom: 1px solid #f0f0f0; }
+  .d9 .category-pill { background: #ff6b35; color: #fff; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 12px; }
+  .d9 .hero h1 { font-size: 32px; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
+  .d9 .hero p { font-size: 15px; color: #666; line-height: 1.6; }
+  .d9 .content { display: flex; }
+  .d9 .main { flex: 1; padding: 24px 28px; }
+  .d9 .main p { font-size: 14px; line-height: 1.9; margin-bottom: 14px; color: #333; }
+  .d9 .main h2 { font-size: 18px; font-weight: 800; margin: 20px 0 10px; }
+  .d9 .callout { background: #fff5f0; border-radius: 12px; padding: 14px 18px; font-size: 13px; color: #333; border-left: 4px solid #ff6b35; margin-bottom: 16px; }
+  .d9 .sidebar { width: 200px; padding: 24px 16px; border-left: 1px solid #f0f0f0; }
+  .d9 .related-card { border: 1px solid #f0f0f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .d9 .related-card .title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .d9 .related-card .desc { font-size: 11px; color: #999; }
+
+  /* ===== 10. 퍼플 프리미엄 ===== */
+  .d10 { background: #0d0d1a; color: #e8e8f0; }
+  .d10 .nav { background: linear-gradient(90deg, #1a0533, #0d0d1a); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2a1a4a; }
+  .d10 .nav-logo { font-weight: 900; font-size: 22px; }
+  .d10 .nav-logo em { background: linear-gradient(90deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-style: normal; }
+  .d10 .nav input { background: #1a1a2e; border: 1px solid #2a1a4a; color: #e8e8f0; padding: 6px 14px; border-radius: 20px; font-size: 13px; }
+  .d10 .breadcrumb { padding: 10px 28px; font-size: 12px; color: #6b5b8b; border-bottom: 1px solid #1a1a2e; }
+  .d10 .breadcrumb a { color: #a855f7; }
+  .d10 .content { display: flex; }
+  .d10 .main { flex: 1; padding: 28px 32px; }
+  .d10 .gradient-title { font-size: 34px; font-weight: 900; background: linear-gradient(90deg, #fff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; letter-spacing: -1px; }
+  .d10 .meta { color: #6b5b8b; font-size: 12px; margin-bottom: 20px; }
+  .d10 .main p { font-size: 14px; line-height: 1.9; color: #b0a0c8; margin-bottom: 14px; }
+  .d10 .main h2 { font-size: 17px; color: #e8e8f0; margin: 22px 0 10px; font-weight: 700; }
+  .d10 .glow-box { background: linear-gradient(135deg, #1a0533, #1a1a2e); border: 1px solid #a855f720; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-size: 13px; color: #c084fc; box-shadow: 0 0 20px rgba(168,85,247,0.1); }
+  .d10 .sidebar { width: 190px; padding: 28px 16px; border-left: 1px solid #1a1a2e; }
+  .d10 .sidebar-title { color: #a855f7; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 12px; }
+  .d10 .sidebar a { display: block; color: #8b7a9b; margin-bottom: 8px; font-size: 13px; padding: 6px 10px; border-radius: 8px; }
+  .d10 .sidebar a.active { background: #a855f720; color: #c084fc; }
+</style>
+</head>
+<body>
+<h1>주린위키 디자인 후보 10선</h1>
+<p class="subtitle">마음에 드는 스타일 번호를 알려주세요</p>
+
+<div class="grid">
+
+  <!-- 1. 위키피디아 클래식 -->
+  <div class="card">
+    <div class="card-label">① 위키피디아 클래식 <span>신뢰감·학술적</span></div>
+    <div class="preview">
+      <div class="preview-inner d1">
+        <div class="nav"><span class="nav-logo">주린위키</span><input placeholder="🔍 검색..." /></div>
+        <div class="content">
+          <div class="sidebar">
+            <div class="sidebar-title">분류</div>
+            <a>기본 용어</a><a>지표 분석</a><a>투자 전략</a><a>ETF</a><a>배당주</a>
+            <br><div class="sidebar-title" style="margin-top:12px">도구</div>
+            <a>편집 기록</a><a>관련 문서</a>
+          </div>
+          <div class="main">
+            <div class="infobox"><div class="infobox-title">PER 요약</div><table><tr><td>종류</td><td>밸류에이션</td></tr><tr><td>단위</td><td>배(倍)</td></tr><tr><td>계산</td><td>주가÷EPS</td></tr></table></div>
+            <h1>PER (주가수익비율)</h1>
+            <div class="toc"><div class="toc-title">목차</div><ol><li>개요</li><li>계산 방법</li><li>해석 방법</li><li>주의사항</li></ol></div>
+            <p><b>PER</b>(Price-Earnings Ratio, 주가수익비율)은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 주식이 얼마나 비싼지 판단하는 기본 지표입니다.</p>
+            <h2>계산 방법</h2>
+            <p>PER = 주가 ÷ 주당순이익(EPS). 예를 들어 주가가 10만원이고 EPS가 1만원이면 PER은 10배입니다.</p>
+            <h2>해석 방법</h2>
+            <p>PER이 낮을수록 이익 대비 주가가 저렴하다는 의미이며, 같은 업종 내에서 비교하는 것이 중요합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 나무위키 스타일 -->
+  <div class="card">
+    <div class="card-label">② 나무위키 스타일 <span>친숙·대중적</span></div>
+    <div class="preview">
+      <div class="preview-inner d2">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><input placeholder="🔍 검색..." /></div>
+        <div class="tab-bar"><div class="tab active">문서</div><div class="tab">토론</div><div class="tab">편집 기록</div><div class="tab">편집</div></div>
+        <div class="main">
+          <span class="tag">기본 용어</span><span class="tag">밸류에이션</span>
+          <h1>PER (주가수익비율)</h1>
+          <div class="meta">최근 수정: 2024.12.01 · 편집자: 주린이탈출</div>
+          <div class="toc"><div class="toc-title">목차</div><ol><li>개요</li><li>계산 방법</li><li>해석 방법</li><li>주의사항</li></ol></div>
+          <p><b>PER</b>은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 주식이 얼마나 비싼지 판단하는 가장 기본적인 지표입니다.</p>
+          <h2>1. 계산 방법</h2>
+          <p>PER = 주가 ÷ EPS. 주가가 10만원이고 EPS가 1만원이면 PER은 10배입니다.</p>
+          <h2>2. 해석 방법</h2>
+          <p>PER이 낮을수록 이익 대비 주가가 저렴하다는 의미입니다. 업종마다 기준이 크게 다릅니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 모던 다크 -->
+  <div class="card">
+    <div class="card-label">③ 모던 다크 <span>세련·개발자 감성</span></div>
+    <div class="preview">
+      <div class="preview-inner d3">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><div class="nav-right"><input placeholder="🔍 검색..." /></div></div>
+        <div class="content">
+          <div class="sidebar">
+            <div class="sidebar-title">카테고리</div>
+            <a class="active">기본 용어</a><a>지표 분석</a><a>투자 전략</a><a>ETF</a><a>배당주</a>
+            <div class="sidebar-title" style="margin-top:16px">바로가기</div>
+            <a>편집 기록</a><a>관련 문서</a>
+          </div>
+          <div class="main">
+            <div class="badge">기본 용어</div>
+            <h1>PER (주가수익비율)</h1>
+            <div class="highlight"><strong>한 줄 요약</strong> — 주가를 주당순이익으로 나눈 값. 주식이 얼마나 비싼지 보는 지표.</div>
+            <p>PER(Price-Earnings Ratio)은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 밸류에이션 판단의 가장 기본적인 지표입니다.</p>
+            <h2>계산 방법</h2>
+            <p>PER = 주가 ÷ EPS. 예를 들어 주가 10만원, EPS 1만원이면 PER은 10배입니다.</p>
+            <h2>해석 방법</h2>
+            <p>낮을수록 저평가, 높을수록 고평가. 단, 업종별 기준이 다르므로 반드시 동일 업종과 비교해야 합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 금융/전문 -->
+  <div class="card">
+    <div class="card-label">④ 금융 전문가 스타일 <span>신뢰·권위적</span></div>
+    <div class="preview">
+      <div class="preview-inner d4">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><input placeholder="🔍 검색..." /></div>
+        <div class="breadcrumb"><a>홈</a> › <a>기본 용어</a> › PER</div>
+        <div class="content">
+          <div class="main">
+            <h1>PER (주가수익비율)</h1>
+            <div class="stat-cards">
+              <div class="stat-card"><div class="val">10배</div><div class="lbl">예시 PER</div></div>
+              <div class="stat-card"><div class="val">낮을수록</div><div class="lbl">저평가 신호</div></div>
+              <div class="stat-card"><div class="val">업종별</div><div class="lbl">비교 필수</div></div>
+            </div>
+            <div class="summary-box">PER(주가수익비율)은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 주식의 밸류에이션을 판단하는 핵심 지표입니다.</div>
+            <h2>계산 방법</h2>
+            <p>PER = 주가 ÷ EPS. 주가 10만원, EPS 1만원이면 PER 10배.</p>
+            <h2>해석 및 활용</h2>
+            <p>PER이 낮을수록 이익 대비 주가가 저렴함을 의미합니다. 동일 업종 내 비교 분석이 필수입니다.</p>
+          </div>
+          <div class="sidebar"><div class="related"><div class="related-title">관련 용어</div><a>PBR</a><a>ROE</a><a>EPS</a><a>배당수익률</a><a>시가총액</a></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 매거진 -->
+  <div class="card">
+    <div class="card-label">⑤ 매거진 스타일 <span>임팩트·읽힘</span></div>
+    <div class="preview">
+      <div class="preview-inner d5">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><div class="nav-right"><a>홈</a><a>카테고리</a><a>검색</a></div></div>
+        <div class="category-bar"><div class="cat-item active">기본용어</div><div class="cat-item">지표</div><div class="cat-item">ETF</div><div class="cat-item">배당</div></div>
+        <div class="content">
+          <div class="main">
+            <div class="eyebrow">기본 용어 · 밸류에이션</div>
+            <h1>PER, 주가수익비율이란?</h1>
+            <div class="deck">주식이 얼마나 비싼지 판단하는 가장 기본적인 지표. 이것 하나만 알아도 절반은 이해한 것입니다.</div>
+            <p>PER(Price-Earnings Ratio)은 현재 주가를 주당순이익(EPS)으로 나눈 값입니다. 쉽게 말해, 이 회사의 1년 이익으로 주가를 회수하려면 몇 년이 걸리는지를 나타냅니다.</p>
+            <div class="pull-quote">"PER 10이면, 지금 이익 속도로 10년이면 원금 회수"</div>
+            <h2>어떻게 계산하나요?</h2>
+            <p>PER = 주가 ÷ EPS. 주가 10만원, EPS 1만원 → PER 10배.</p>
+          </div>
+          <div class="sidebar"><div class="sidebar-section"><div class="sidebar-title">관련 문서</div><a>📌 PBR이란?</a><a>📌 ROE 완전정복</a><a>📌 EPS 계산법</a></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 그린 에코 -->
+  <div class="card">
+    <div class="card-label">⑥ 그린 에코 <span>친근·따뜻함</span></div>
+    <div class="preview">
+      <div class="preview-inner d6">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><input placeholder="🔍 검색..." /></div>
+        <div class="hero">
+          <div class="hero-badge">기본 용어</div>
+          <h1>PER (주가수익비율)</h1>
+          <p>주식 초보자도 꼭 알아야 할 핵심 지표. 쉽고 빠르게 이해해보세요.</p>
+        </div>
+        <div class="content">
+          <div class="main">
+            <div class="tip-box">💡 <strong>핵심 요약</strong> — PER은 주가를 주당순이익으로 나눈 값. 낮을수록 저평가 신호!</div>
+            <p>PER(Price-Earnings Ratio)은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 주식의 가격이 적정한지 판단하는 기본 지표입니다.</p>
+            <h2>📊 계산 방법</h2>
+            <p>PER = 주가 ÷ EPS. 주가 10만원, EPS 1만원이면 PER은 10배입니다.</p>
+            <h2>🔍 어떻게 해석하나요?</h2>
+            <p>낮을수록 저평가, 높을수록 고평가. 단, 업종마다 기준이 달라요!</p>
+          </div>
+          <div class="sidebar">
+            <div class="sidebar-card"><div class="title">관련 용어</div>PBR, ROE, EPS</div>
+            <div class="sidebar-card"><div class="title">최근 편집</div>2024.12.01</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 미니멀 타이포 -->
+  <div class="card">
+    <div class="card-label">⑦ 미니멀 타이포그래피 <span>고급·집중</span></div>
+    <div class="preview">
+      <div class="preview-inner d7">
+        <div class="nav"><span class="nav-logo">주린위키</span><input placeholder="검색..." /></div>
+        <div class="main">
+          <div class="kicker">기본 용어 / 밸류에이션</div>
+          <h1>PER, 주가수익비율</h1>
+          <div class="summary">주가를 주당순이익으로 나눈 값. 주식이 얼마나 비싼지 판단하는 가장 기본적인 지표입니다.</div>
+          <p>PER(Price-Earnings Ratio)은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 투자자들이 주식의 밸류에이션을 판단할 때 가장 먼저 보는 지표입니다.</p>
+          <h2>계산 방법</h2>
+          <p>PER = 주가 ÷ 주당순이익(EPS). 주가가 10만원이고 EPS가 1만원이면 PER은 10배입니다.</p>
+          <h2>해석 방법</h2>
+          <p>PER이 낮을수록 이익 대비 주가가 저렴함을 의미합니다. 단, 업종마다 적정 PER이 다릅니다.</p>
+          <div class="footnote">최근 편집: 2024.12.01 · 편집자: 주린이탈출 · 편집 기록 보기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. 카드/대시보드 -->
+  <div class="card">
+    <div class="card-label">⑧ 대시보드 스타일 <span>모던·정보중심</span></div>
+    <div class="preview">
+      <div class="preview-inner d8">
+        <div class="nav"><span class="nav-logo">주린위키</span><input placeholder="🔍 검색..." /></div>
+        <div class="content">
+          <div class="sidebar">
+            <div class="icon active">🏠</div>
+            <div class="icon">📚</div>
+            <div class="icon">🔍</div>
+            <div class="icon">⭐</div>
+          </div>
+          <div class="main">
+            <div class="page-header">
+              <div>
+                <h1>PER (주가수익비율)</h1>
+                <div class="chips"><div class="chip">기본 용어</div><div class="chip">밸류에이션</div></div>
+              </div>
+            </div>
+            <div class="cards">
+              <div class="stat"><div class="val">PER</div><div class="lbl">지표 유형: 밸류에이션</div></div>
+              <div class="stat"><div class="val">낮을수록</div><div class="lbl">저평가 가능성</div></div>
+              <div class="stat"><div class="val">업종별</div><div class="lbl">비교 필수</div></div>
+            </div>
+            <div class="content-card">
+              <p>PER은 주가를 주당순이익(EPS)으로 나눈 값으로, 주식의 밸류에이션을 판단하는 핵심 지표입니다.</p>
+              <h2>계산 방법</h2>
+              <p>PER = 주가 ÷ EPS. 주가 10만원, EPS 1만원 → PER 10배.</p>
+              <h2>해석 방법</h2>
+              <p>낮을수록 저평가. 동일 업종 내 비교 필수.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 오렌지 스타트업 -->
+  <div class="card">
+    <div class="card-label">⑨ 오렌지 스타트업 <span>활기·젊은 감성</span></div>
+    <div class="preview">
+      <div class="preview-inner d9">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><div class="nav-right"><div class="btn btn-outline">로그인</div><div class="btn btn-fill">편집</div></div></div>
+        <div class="hero">
+          <div class="category-pill">기본 용어</div>
+          <h1>PER (주가수익비율)</h1>
+          <p>주식이 얼마나 비싼지 판단하는 가장 기본적인 지표. 초보 투자자도 쉽게 이해할 수 있어요.</p>
+        </div>
+        <div class="content">
+          <div class="main">
+            <div class="callout">💡 PER = 주가 ÷ EPS. 낮을수록 저평가 신호!</div>
+            <p>PER(Price-Earnings Ratio)은 현재 주가를 주당순이익(EPS)으로 나눈 값입니다. 이 회사의 이익으로 주가를 회수하는 데 몇 년 걸리는지를 나타냅니다.</p>
+            <h2>계산 방법</h2>
+            <p>주가 10만원, EPS 1만원 → PER 10배.</p>
+          </div>
+          <div class="sidebar">
+            <div class="related-card"><div class="title">📌 PBR이란?</div><div class="desc">주가순자산비율 알아보기</div></div>
+            <div class="related-card"><div class="title">📌 ROE 완전정복</div><div class="desc">자기자본이익률의 모든 것</div></div>
+            <div class="related-card"><div class="title">📌 EPS 계산법</div><div class="desc">주당순이익 쉽게 이해하기</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 퍼플 프리미엄 -->
+  <div class="card">
+    <div class="card-label">⑩ 퍼플 프리미엄 <span>고급·미래적</span></div>
+    <div class="preview">
+      <div class="preview-inner d10">
+        <div class="nav"><span class="nav-logo">주린<em>위키</em></span><input placeholder="🔍 검색..." /></div>
+        <div class="breadcrumb"><a>홈</a> › <a>기본 용어</a> › PER</div>
+        <div class="content">
+          <div class="main">
+            <div class="gradient-title">PER (주가수익비율)</div>
+            <div class="meta">기본 용어 · 최근 편집 2024.12.01 · 편집자: 주린이탈출</div>
+            <div class="glow-box">✨ 핵심 요약 — PER은 주가를 주당순이익으로 나눈 값. 낮을수록 저평가 가능성이 높습니다.</div>
+            <p>PER(Price-Earnings Ratio)은 현재 주가를 주당순이익(EPS)으로 나눈 값으로, 주식의 밸류에이션을 판단하는 핵심 지표입니다.</p>
+            <h2>계산 방법</h2>
+            <p>PER = 주가 ÷ EPS. 주가 10만원, EPS 1만원이면 PER은 10배입니다.</p>
+            <h2>해석 방법</h2>
+            <p>낮을수록 저평가. 단, 업종별 기준이 다르므로 동일 업종 비교가 필수입니다.</p>
+          </div>
+          <div class="sidebar">
+            <div class="sidebar-title">관련 문서</div>
+            <a class="active">PER</a><a>PBR</a><a>ROE</a><a>EPS</a><a>배당수익률</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

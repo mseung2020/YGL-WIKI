@@ -2,31 +2,37 @@
 
 import { supabaseAdmin as supabase } from '@/lib/supabase-admin'
 
-export async function getArticleBySlug(slug: string) {
+export interface Article {
+  id: string
+  slug: string
+  title: string
+  content: string
+  summary: string | null
+  category_id: string | null
+  created_at: string
+  updated_at: string
+  categories: { id: string; name: string; slug: string } | null
+}
+
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const { data, error } = await supabase
     .from('articles')
-    .select(`
-      *,
-      categories(id, name, slug)
-    `)
+    .select(`*, categories(id, name, slug)`)
     .eq('slug', slug)
     .single()
 
   if (error) return null
-  return data
+  return data as Article
 }
 
-export async function getAllArticles() {
+export async function getAllArticles(): Promise<Article[]> {
   const { data, error } = await supabase
     .from('articles')
-    .select(`
-      id, slug, title, summary, updated_at,
-      categories(id, name, slug)
-    `)
+    .select(`id, slug, title, summary, updated_at, category_id, content, created_at, categories(id, name, slug)`)
     .order('updated_at', { ascending: false })
 
   if (error) return []
-  return data
+  return (data ?? []) as unknown as Article[]
 }
 
 export async function createArticle({
@@ -48,7 +54,7 @@ export async function createArticle({
 }) {
   const { data: article, error } = await supabase
     .from('articles')
-    .insert({ slug, title, content, summary, category_id })
+    .insert({ slug, title, content, summary, category_id: category_id || null })
     .select()
     .single()
 
@@ -83,7 +89,7 @@ export async function updateArticle({
 }) {
   const { data: article, error } = await supabase
     .from('articles')
-    .update({ title, content, summary, category_id, updated_at: new Date().toISOString() })
+    .update({ title, content, summary, category_id: category_id || null, updated_at: new Date().toISOString() })
     .eq('id', id)
     .select()
     .single()
