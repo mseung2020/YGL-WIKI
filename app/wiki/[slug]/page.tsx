@@ -11,41 +11,37 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
     <div className="min-h-screen" style={{ background: '#f5f5f5' }}>
       {/* 탭 바 */}
       <div style={{ background: '#f5f5f5', borderBottom: '1px solid #ddd' }}>
-        <div className="max-w-5xl mx-auto px-4 flex gap-0">
-          <div className="text-sm px-4 py-2 font-semibold border-b-2" style={{ color: '#1a73e8', borderColor: '#1a73e8' }}>문서</div>
-          <Link href={`/wiki/${slug}/history`} className="text-sm px-4 py-2 hover:bg-gray-100 transition" style={{ color: '#555' }}>편집 기록</Link>
-          <Link href={`/admin/articles/${article.id}/edit`} className="text-sm px-4 py-2 hover:bg-gray-100 transition" style={{ color: '#555' }}>편집</Link>
+        <div className="max-w-5xl mx-auto px-4 flex">
+          <div className="text-sm px-3 py-2 font-semibold border-b-2" style={{ color: '#1a73e8', borderColor: '#1a73e8' }}>문서</div>
+          <Link href={`/wiki/${slug}/history`} className="text-sm px-3 py-2 hover:bg-gray-100 transition" style={{ color: '#555' }}>편집 기록</Link>
+          <Link href={`/admin/articles/${article.id}/edit`} className="text-sm px-3 py-2 hover:bg-gray-100 transition" style={{ color: '#555' }}>편집</Link>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-5">
-        <div className="flex gap-6">
+      <div className="max-w-5xl mx-auto px-4 py-4">
+        <div className="flex gap-5">
           {/* 본문 */}
-          <div className="flex-1 bg-white rounded border border-gray-200 p-6">
-            {/* 카테고리 태그 */}
-            <div className="flex gap-2 mb-3 flex-wrap">
-              {article.categories && (
-                <Link
-                  href={`/category/${article.categories.slug}`}
-                  className="text-xs px-2 py-0.5 rounded-full"
-                  style={{ background: '#e8f0fe', color: '#1a73e8' }}
-                >
-                  {article.categories.name}
-                </Link>
-              )}
-            </div>
+          <div className="flex-1 min-w-0 bg-white rounded border border-gray-200 p-4 md:p-6">
+            {article.categories && (
+              <Link
+                href={`/category/${article.categories.slug}`}
+                className="inline-block text-xs px-2 py-0.5 rounded-full mb-3"
+                style={{ background: '#e8f0fe', color: '#1a73e8' }}
+              >
+                {article.categories.name}
+              </Link>
+            )}
 
-            <h1 className="text-2xl font-black mb-1 tracking-tight">{article.title}</h1>
-            <div className="text-xs mb-5 pb-4 border-b border-gray-100" style={{ color: '#999' }}>
+            <h1 className="text-xl md:text-2xl font-black mb-1 tracking-tight">{article.title}</h1>
+            <div className="text-xs mb-4 pb-4 border-b border-gray-100" style={{ color: '#999' }}>
               최근 수정: {new Date(article.updated_at).toLocaleDateString('ko-KR')}
             </div>
 
-            {/* 본문 내용 */}
             <div className="wiki-content" dangerouslySetInnerHTML={{ __html: article.content }} />
           </div>
 
-          {/* 사이드바 */}
-          <div className="w-52 shrink-0 space-y-4">
+          {/* 사이드바 - 데스크탑만 */}
+          <div className="w-48 shrink-0 space-y-4 hidden md:block">
             <div className="bg-white rounded border border-gray-200 overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-200">
                 <h3 className="font-bold text-sm">바로가기</h3>

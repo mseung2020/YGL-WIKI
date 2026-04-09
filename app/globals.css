@@ -61,3 +61,17 @@ body {
 .wiki-content a:hover {
   text-decoration: underline;
 }
+/* 모바일 overflow 방지 */
+.wiki-content {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+.wiki-content img {
+  max-width: 100%;
+  height: auto;
+}
+.wiki-content pre, .wiki-content table {
+  overflow-x: auto;
+  max-width: 100%;
+}
